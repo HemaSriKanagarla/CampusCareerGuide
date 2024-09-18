@@ -19,7 +19,7 @@ The purpose of this project is to create a supportive community where current st
 ## Technologies Used
 
 - **Frontend**: Python (Tkinter library)
-- **Database**: MySQL
+- **Database**: Python
 
 ## Installation
 

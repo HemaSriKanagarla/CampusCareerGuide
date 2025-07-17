@@ -3,8 +3,8 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import sqlite3
 
-# Sample student credentials (replace with your own authentication logic)
-valid_credentials = {"username": "123", "password": "123"}
+# Sample student credentials (replace with your own College Credentials)
+valid_credentials = {"username": "22B01a4243", "password": "22B01A4243"}
 
 def center_window(root, width, height):
     screen_width = root.winfo_screenwidth()
@@ -41,7 +41,7 @@ def open_second_page():
     center_window_toplevel(root, second_window)
 
     
-    bg_image = Image.open(r"C:\Users\HEMASRI\Downloads\college.jpeg")
+    bg_image = Image.open(r"C:\Users\HEMASRI\OneDrive\Desktop\wise project\college")
     bg_photo = ImageTk.PhotoImage(bg_image.resize((600, 600)))  # Resize the image
     background_label = tk.Label(second_window, image=bg_photo)
     background_label.image = bg_photo
@@ -58,8 +58,44 @@ def open_second_page():
     submit_button = tk.Button(second_window, text="Submit", font=("Helvetica", 16), command=lambda: display_company_data(listbox.get(tk.ACTIVE)))
     submit_button.pack()
 
+
+
+def init_database():
+    conn = sqlite3.connect("student_data.db")
+    c = conn.cursor()
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS StudentPro (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            Name TEXT NOT NULL,
+            Email TEXT NOT NULL,
+            Company TEXT NOT NULL,
+            Position TEXT NOT NULL,
+            Phno TEXT NOT NULL
+        )
+    """)
+    # Add only if table is empty
+    c.execute("SELECT COUNT(*) FROM StudentPro")
+    if c.fetchone()[0] == 0:
+        students = [
+            ('Aarav Reddy', 'aarav@microsoft.com', 'Microsoft', 'Software Engineer', '9876543210'),
+            ('Sneha Iyer', 'sneha@amazon.com', 'Amazon', 'Data Scientist', '8765432109'),
+            ('Karan Mehta', 'karan@flipkart.com', 'Flipkart', 'Backend Developer', '7654321098'),
+            ('Priya Sharma', 'priya@nxp.com', 'NXP', 'ML Engineer', '6543210987'),
+            ('Rahul Verma', 'rahul@meesho.com', 'Meesho', 'Cloud Engineer', '9123456780'),
+            ('Neha Patel', 'neha@amazon.com', 'Amazon', 'Frontend Developer', '9012345678'),
+            ('Aditya Singh', 'aditya@nxp.com', 'NXP', 'AI Researcher', '9988776655'),
+            ('Divya Nair', 'divya@flipkart.com', 'Flipkart', 'Data Analyst', '8877665544'),
+        ]
+        c.executemany("INSERT INTO StudentPro (Name, Email, Company, Position, Phno) VALUES (?, ?, ?, ?, ?)", students)
+    conn.commit()
+    conn.close()
+
+# Call it immediately at top of your GUI code
+init_database()
+
+
 def display_company_data(company_name):
-    conn = sqlite3.connect('company.db')
+    conn = sqlite3.connect('student_data.db')
     c = conn.cursor()
 
     
@@ -75,7 +111,7 @@ def display_company_data(company_name):
     center_window_toplevel(root, display_window)
 
     
-    bg_image = Image.open(r"C:\Users\HEMASRI\Downloads\college.jpeg")
+    bg_image = Image.open(r"C:\Users\HEMASRI\OneDrive\Desktop\wise project\college")
     bg_photo = ImageTk.PhotoImage(bg_image.resize((500, 500)))  
     background_label = tk.Label(display_window, image=bg_photo)
     background_label.image = bg_photo
@@ -103,7 +139,7 @@ front_page_height = 500
 center_window(front_page, front_page_width, front_page_height)
 
 
-bg_image = Image.open(r"C:\Users\HEMASRI\Downloads\college.jpeg")
+bg_image = Image.open(r"C:\Users\HEMASRI\OneDrive\Desktop\wise project\college")
 bg_photo = ImageTk.PhotoImage(bg_image.resize((500, 500)))  # Resize the image
 background_label = tk.Label(front_page, image=bg_photo)
 background_label.image = bg_photo
@@ -118,7 +154,7 @@ enter_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 
 # Sample company names (replace with your own data)
-company_names = ["Microsoft", "Flipkart", "Amazon", "Google"]
+company_names = ["Microsoft", "Flipkart", "Amazon", "NXP","Meesho"]
 
 front_page.mainloop()
 
@@ -132,7 +168,7 @@ window_height = 500
 center_window(root, window_width, window_height)
 
 # Load background image
-bg_image = Image.open(r"C:\Users\HEMASRI\Downloads\college.jpeg")
+bg_image = Image.open(r"C:\Users\HEMASRI\OneDrive\Desktop\wise project\college")
 bg_photo = ImageTk.PhotoImage(bg_image.resize((window_width, window_height)))  # Resize the image
 background_label = tk.Label(root, image=bg_photo)
 background_label.image = bg_photo
@@ -160,4 +196,3 @@ login_button = tk.Button(root, text="Login",font=("Helvetica", 13), padx=8, pady
 login_button.pack()
 
 root.mainloop()
-
